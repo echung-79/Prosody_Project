@@ -29,8 +29,12 @@ WORKERS = 8
 WINDOW = torch.hann_window
 
 # Audio Location
-AUDIO_LOCATION = '/orcd/archive/evelina9/001/u/jwdase/Augmented_Data'
-MODEL_LOCATION = '/orcd/archive/evelina9/001/u/jwdase/Model'
+# Synthesized audio lives in {AUDIO_LOCATION}/{lang}_synth/<clip>_synthesized.wav
+# lengths.py writes {AUDIO_LOCATION}/{lang}/custom/length.csv
+AUDIO_LOCATION = '/orcd/scratch/orcd/006/echung79/prosody'
+# CommonVoice metadata (validated.tsv with client_id) per language
+TSV_LOCATION = '/home/echung79/prosody/data/raw_audio'
+MODEL_LOCATION = '/orcd/scratch/orcd/006/echung79/prosody_model'
 
 # Low Pass Filter, Location to save Audio
 CUTOFF = 300

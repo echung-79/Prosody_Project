@@ -2,7 +2,7 @@ from language_detection.spect import main
 from language_detection.data.spectrogram.functions import compute_lowpass_spectrogram_batch, compute_spectrogram_batch
 
 if __name__ == '__main__':
-    languages = ["ja", "uz"]
+    languages = ["de", "en", "es", "it", "ja", "nl", "ta"]
 
     n_ftt = 1024
     hop_length = 512

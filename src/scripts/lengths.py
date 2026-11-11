@@ -30,7 +30,8 @@ def main(lang):
         df_values(person_data, lang)
     )
 
-    for i, (name, urls) in enumerate(files.items()):
+    # start=1: row 0 already holds the popped speaker
+    for i, (name, urls) in enumerate(files.items(), start=1):
         df.loc[i] = make_into_list(
             name,
             df_values(urls, lang)
@@ -43,7 +44,10 @@ def main(lang):
 
 if __name__ == '__main__':
 
-    languages = ["uz", "ja"] 
+    import sys
+
+    # Pass languages on the command line, or default to all seven synthesized ones
+    languages = sys.argv[1:] or ["de", "en", "es", "it", "ja", "nl", "ta"]
 
     for lang in languages:
         main(lang)

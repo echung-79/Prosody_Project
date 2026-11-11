@@ -27,11 +27,17 @@ def language_path_builder(df, language):
     correct one
     '''
 
-    path = f'{config.AUDIO_LOCATION}/{language}/clips/'
+    path = f'{config.AUDIO_LOCATION}/{language}_synth/'
 
-    ending = '.wav'
+    return (path + synth_name(file) for file in df['path'])
 
-    return (path + file.replace('.mp3', '.wav') for file in df['path'])
+
+def synth_name(file):
+    '''
+    Maps a CommonVoice clip name to its MATLAB-synthesized output name:
+    common_voice_de_123.mp3 -> common_voice_de_123_synthesized.wav
+    '''
+    return file.replace('.mp3', '_synthesized.wav')
 
 
 def valid_paths(df, length, delta, language):

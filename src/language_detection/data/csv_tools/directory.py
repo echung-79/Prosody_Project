@@ -1,7 +1,9 @@
+import os
 import pandas as pd
 from pathlib import Path
 
 from language_detection import config
+from language_detection.data.audio import synth_name
 
 def open_files(language, size = None):
     '''
@@ -9,12 +11,19 @@ def open_files(language, size = None):
     paths to files, also includes speaker id
     '''
 
-    root = config.AUDIO_LOCATION
-     
-    path = (f'{root}/{language}/validated.tsv')
+    path = f'{config.TSV_LOCATION}/{language}/validated.tsv'
     dataframe = pd.read_csv(path, sep = '\t', low_memory = False)[['client_id', 'path']]
 
-    print(f'Loading {language} from: {path}')
+    # Keep only clips that were actually synthesized, so we don't
+    # probe hundreds of thousands of missing files on scratch
+    synth_dir = f'{config.AUDIO_LOCATION}/{language}_synth'
+    synthesized = set(os.listdir(synth_dir))
+    dataframe = dataframe[dataframe['path'].map(synth_name).isin(synthesized)]
+
+    print(f'Loading {language} from: {path} ({len(dataframe)} synthesized clips in {synth_dir})')
+
+    if dataframe.empty:
+        raise RuntimeError(f'No validated.tsv rows match files in {synth_dir}')
 
     if size is not None:
         return dataframe.sample(n = min(size, len(dataframe)))
